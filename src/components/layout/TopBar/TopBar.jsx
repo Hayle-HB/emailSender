@@ -21,46 +21,50 @@ const TopBar = ({ toggleSidebar, isOpen }) => {
       ${isOpen ? "md:left-64" : "md:left-20"} left-0`}
     >
       <div className="flex items-center justify-between h-full px-4">
-        {/* Menu Toggle & Logo for Mobile */}
-        <div className="flex items-center md:hidden">
+        {/* Theme Toggle for Mobile & Logo */}
+        <div className="flex items-center">
+          {/* Theme Toggle for Mobile */}
           <button
-            onClick={toggleSidebar}
-            className={`p-2 rounded-lg transition-all duration-300 ${
+            onClick={() => dispatch(toggleTheme())}
+            className={`md:hidden p-2 rounded-lg transition-all duration-300 ${
               darkMode
                 ? "text-gray-200 hover:bg-gray-800 hover:text-white"
                 : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
             }`}
           >
-            <HiMenuAlt2
-              className={`w-6 h-6 transform transition-transform duration-300 ${
-                isOpen ? "rotate-180" : "rotate-0"
-              }`}
-            />
+            {darkMode ? (
+              <HiOutlineSun className="w-6 h-6" />
+            ) : (
+              <HiOutlineMoon className="w-6 h-6" />
+            )}
           </button>
+
+          {/* Logo for Mobile */}
           <span
-            className={`ml-3 font-semibold ${
+            className={`ml-3 font-semibold md:hidden flex items-center ${
               darkMode ? "text-gray-200" : "text-gray-700"
             }`}
           >
-            EmailManager
+            <span className="text-blue-500 mr-1">Email</span>
+            <span>Sender</span>
           </span>
-        </div>
 
-        {/* Theme Toggle Button */}
-        <button
-          onClick={() => dispatch(toggleTheme())}
-          className={`hidden md:block p-2 rounded-lg transition-all duration-300 ${
-            darkMode
-              ? "text-gray-200 hover:bg-gray-800 hover:text-white"
-              : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-          }`}
-        >
-          {darkMode ? (
-            <HiOutlineSun className="w-6 h-6" />
-          ) : (
-            <HiOutlineMoon className="w-6 h-6" />
-          )}
-        </button>
+          {/* Theme Toggle for Desktop */}
+          <button
+            onClick={() => dispatch(toggleTheme())}
+            className={`hidden md:block p-2 rounded-lg transition-all duration-300 ${
+              darkMode
+                ? "text-gray-200 hover:bg-gray-800 hover:text-white"
+                : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+            }`}
+          >
+            {darkMode ? (
+              <HiOutlineSun className="w-6 h-6" />
+            ) : (
+              <HiOutlineMoon className="w-6 h-6" />
+            )}
+          </button>
+        </div>
 
         {/* Google-style Search Bar */}
         <div className="hidden sm:flex items-center flex-1 max-w-2xl mx-4">

@@ -1,9 +1,61 @@
 import React, { useState } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Provider, useSelector } from "react-redux";
+import { AnimatePresence } from "framer-motion";
 import store from "./app/store";
 import SideBar from "./components/layout/Sidebar/SideBar";
 import TopBar from "./components/layout/TopBar/TopBar";
+import PageTransition from "./components/layout/PageTransition";
+
+// Import your page components
+import Home from "./pages/Home";
+import SendEmail from "./pages/SendEmail";
+import Subscribers from "./pages/Subscribers";
+import Profile from "./pages/Profile";
+
+// Create a wrapper component for routes
+const AnimatedRoutes = () => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route
+          path="/"
+          element={
+            <PageTransition>
+              <Home />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/send-email"
+          element={
+            <PageTransition>
+              <SendEmail />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/subscribers"
+          element={
+            <PageTransition>
+              <Subscribers />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <PageTransition>
+              <Profile />
+            </PageTransition>
+          }
+        />
+      </Routes>
+    </AnimatePresence>
+  );
+};
 
 // Create a wrapper component to access Redux state
 const AppContent = () => {
@@ -27,7 +79,7 @@ const AppContent = () => {
         >
           <TopBar toggleSidebar={toggleSidebar} isOpen={sidebarOpen} />
           <main className="pt-20 p-6 mb-16 md:mb-0 transition-all duration-500 ease-in-out">
-            {/* Your main content/routes here */}
+            <AnimatedRoutes />
           </main>
         </div>
       </div>

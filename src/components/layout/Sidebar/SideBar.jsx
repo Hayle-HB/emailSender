@@ -2,9 +2,10 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   HiOutlineMail,
-  HiOutlineUserGroup, 
+  HiOutlineUserGroup,
   HiOutlineUser,
   HiMenuAlt2,
+  HiOutlineHome,
 } from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
 import { toggleTheme } from "../../../feature/theme/theme";
@@ -15,6 +16,11 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
   const dispatch = useDispatch();
 
   const menuItems = [
+    {
+      path: "/",
+      name: "Home",
+      icon: <HiOutlineHome className="w-5 h-5" />,
+    },
     {
       path: "/send-email",
       name: "Send Email",
@@ -46,11 +52,12 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
           ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 w-0"}`}
         >
           <h1
-            className={`text-xl font-semibold ${
+            className={`text-xl font-semibold flex items-center ${
               darkMode ? "text-gray-200" : "text-gray-700"
             }`}
           >
-            EmailManager
+            <span className="text-blue-500">Email</span>
+            <span className="ml-1">Sender</span>
           </h1>
         </div>
         <button
@@ -69,22 +76,22 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
       </div>
 
       {/* Menu Items */}
-      <div className="p-3">
+      <div className="p-3 mt-8">
         {menuItems.map((item) => (
           <Link
             key={item.path}
             to={item.path}
-            className={`flex items-center px-4 py-3 rounded-lg mb-1 
+            className={`flex items-center px-4 py-3 rounded-lg mb-2 
             transform transition-all duration-500 ease-in-out
             ${isOpen ? "space-x-3" : "justify-center"}
             ${
               location.pathname === item.path
                 ? darkMode
-                  ? "bg-gray-800 text-gray-200"
-                  : "bg-white text-gray-800 shadow-sm"
+                  ? "bg-green-900/30 text-green-400 border-r-4 border-green-500"
+                  : "bg-green-50 text-green-700 border-r-4 border-green-500"
                 : darkMode
-                ? "text-gray-400 hover:bg-gray-800 hover:text-gray-200"
-                : "text-gray-600 hover:bg-white hover:text-gray-800"
+                ? "text-gray-400 hover:bg-gray-800/50 hover:text-gray-200"
+                : "text-gray-600 hover:bg-gray-50 hover:text-gray-800"
             }`}
           >
             <div className="transform transition-all duration-500 ease-in-out min-w-[20px]">
@@ -115,11 +122,11 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
           ${
             location.pathname === "/profile"
               ? darkMode
-                ? "bg-gray-800 text-gray-200"
-                : "bg-white text-gray-800 shadow-sm"
+                ? "bg-green-900/30 text-green-400 border-r-4 border-green-500"
+                : "bg-green-50 text-green-700 border-r-4 border-green-500"
               : darkMode
-              ? "text-gray-400 hover:bg-gray-800 hover:text-gray-200"
-              : "text-gray-600 hover:bg-white hover:text-gray-800"
+              ? "text-gray-400 hover:bg-gray-800/50 hover:text-gray-200"
+              : "text-gray-600 hover:bg-gray-50 hover:text-gray-800"
           }`}
         >
           <div className="transform transition-all duration-500 ease-in-out min-w-[20px]">
@@ -153,8 +160,8 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
             className={`flex flex-col items-center justify-center flex-1 h-full ${
               location.pathname === item.path
                 ? darkMode
-                  ? "text-gray-200 bg-gray-800"
-                  : "text-blue-600"
+                  ? "text-green-400 bg-green-900/30 border-t-2 border-green-500"
+                  : "text-green-700 bg-green-50 border-t-2 border-green-500"
                 : darkMode
                 ? "text-gray-400"
                 : "text-gray-600"
@@ -169,8 +176,8 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
           className={`flex flex-col items-center justify-center flex-1 h-full ${
             location.pathname === "/profile"
               ? darkMode
-                ? "text-gray-200 bg-gray-800"
-                : "text-blue-600"
+                ? "text-green-400 bg-green-900/30 border-t-2 border-green-500"
+                : "text-green-700 bg-green-50 border-t-2 border-green-500"
               : darkMode
               ? "text-gray-400"
               : "text-gray-600"
