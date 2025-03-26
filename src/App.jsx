@@ -7,34 +7,37 @@ import SideBar from "./components/layout/Sidebar/SideBar";
 import TopBar from "./components/layout/TopBar/TopBar";
 import PageTransition from "./components/layout/PageTransition";
 
-// Import your page components
-const Home = () => {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh]">
-      <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent font-poppins">
-        Welcome to Email Sender
-      </h1>
-      <p className="text-lg text-gray-600 dark:text-gray-300 font-inter max-w-2xl text-center leading-relaxed">
-        Your all-in-one platform for managing and sending emails efficiently.
-        Get started by exploring our features.
-      </p>
-    </div>
-  );
-};
+// // Import your page components
+// const Home = () => {
+//   return (
+//     <div className="flex flex-col items-center justify-center min-h-[80vh]">
+//       <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent font-poppins">
+//         Welcome to Email Sender
+//       </h1>
+//       <p className="text-lg text-gray-600 dark:text-gray-300 font-inter max-w-2xl text-center leading-relaxed">
+//         Your all-in-one platform for managing and sending emails efficiently.
+//         Get started by exploring our features.
+//       </p>
+//     </div>
+//   );
+// };
 
-const SendEmail = () => {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh]">
-      <h1 className="text-3xl font-semibold mb-4 font-poppins dark:text-gray-200">
-        Send Email
-      </h1>
-      <p className="text-lg text-gray-600 dark:text-gray-300 font-inter max-w-2xl text-center leading-relaxed">
-        Create and send beautiful emails to your subscribers.
-      </p>
-    </div>
-  );
-};
+import Home from "./pages/Home/Home";
 
+// const SendEmail = () => {
+//   return (
+//     <div className="flex flex-col items-center justify-center min-h-[80vh]">
+//       <h1 className="text-3xl font-semibold mb-4 font-poppins dark:text-gray-200">
+//         Send Email
+//       </h1>
+//       <p className="text-lg text-gray-600 dark:text-gray-300 font-inter max-w-2xl text-center leading-relaxed">
+//         Create and send beautiful emails to your subscribers.
+//       </p>
+//     </div>
+//   );
+// };
+
+import SendEmail from "./pages/SendEmail/SendEmail";
 const Subscribers = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh]">

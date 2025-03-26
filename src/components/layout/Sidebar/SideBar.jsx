@@ -33,6 +33,29 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
     },
   ];
 
+  // First, add this new component at the top level of your SideBar component:
+  const ActiveIndicator = ({ pathname, darkMode }) => (
+    <div
+      className={`absolute left-0 right-0 h-12 transition-all duration-500 ease-in-out transform
+      ${darkMode ? "bg-green-900/30" : "bg-green-50"}
+      ${
+        pathname === "/"
+          ? "translate-y-0"
+          : pathname === "/send-email"
+          ? "translate-y-14"
+          : pathname === "/subscribers"
+          ? "translate-y-28"
+          : pathname === "/profile"
+          ? "translate-y-[calc(100vh-6rem)]"
+          : ""
+      }`}
+    >
+      <div
+        className={`absolute right-0 top-0 bottom-0 w-1 bg-green-500 transition-all duration-500 ease-in-out`}
+      />
+    </div>
+  );
+
   // Desktop Sidebar
   const DesktopSidebar = () => (
     <div
@@ -75,23 +98,28 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
         </button>
       </div>
 
-      {/* Menu Items */}
-      <div className="p-3 mt-8">
+      {/* Menu Items Container */}
+      <div className="p-3 mt-8 relative">
+        {/* Active Indicator - Place this before the menu items */}
+        <ActiveIndicator pathname={location.pathname} darkMode={darkMode} />
+
+        {/* Menu Items */}
         {menuItems.map((item) => (
           <Link
             key={item.path}
             to={item.path}
             className={`flex items-center px-4 py-3 rounded-lg mb-2 
             transform transition-all duration-500 ease-in-out
+            relative z-10 group
             ${isOpen ? "space-x-3" : "justify-center"}
             ${
               location.pathname === item.path
                 ? darkMode
-                  ? "bg-green-900/30 text-green-400 border-r-4 border-green-500"
-                  : "bg-green-50 text-green-700 border-r-4 border-green-500"
+                  ? "text-green-400"
+                  : "text-green-700"
                 : darkMode
-                ? "text-gray-400 hover:bg-gray-800/50 hover:text-gray-200"
-                : "text-gray-600 hover:bg-gray-50 hover:text-gray-800"
+                ? "text-gray-400 hover:text-green-400"
+                : "text-gray-600 hover:text-green-700"
             }`}
           >
             <div className="transform transition-all duration-500 ease-in-out min-w-[20px]">
@@ -105,6 +133,23 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
                 {item.name}
               </span>
             </div>
+            {/* Hover background with transition */}
+            <div
+              className={`absolute inset-0 transition-all duration-300 ease-in-out opacity-0 
+              group-hover:opacity-100 
+              ${darkMode ? "bg-green-900/20" : "bg-green-50/70"}
+              ${location.pathname === item.path ? "opacity-100" : ""}`}
+            />
+            {/* Hover border with transition */}
+            <div
+              className={`absolute right-0 top-0 bottom-0 w-1 transition-all duration-300 ease-in-out 
+              transform scale-y-0 group-hover:scale-y-100 bg-green-500/50
+              ${
+                location.pathname === item.path
+                  ? "scale-y-100 bg-green-500"
+                  : ""
+              }`}
+            />
           </Link>
         ))}
       </div>
@@ -118,15 +163,16 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
           to="/profile"
           className={`flex items-center px-4 py-3 rounded-lg 
           transform transition-all duration-500 ease-in-out
+          relative z-10 group
           ${isOpen ? "space-x-3" : "justify-center"}
           ${
             location.pathname === "/profile"
               ? darkMode
-                ? "bg-green-900/30 text-green-400 border-r-4 border-green-500"
-                : "bg-green-50 text-green-700 border-r-4 border-green-500"
+                ? "text-green-400"
+                : "text-green-700"
               : darkMode
-              ? "text-gray-400 hover:bg-gray-800/50 hover:text-gray-200"
-              : "text-gray-600 hover:bg-gray-50 hover:text-gray-800"
+              ? "text-gray-400 hover:text-green-400"
+              : "text-gray-600 hover:text-green-700"
           }`}
         >
           <div className="transform transition-all duration-500 ease-in-out min-w-[20px]">
@@ -140,6 +186,21 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
               Profile
             </span>
           </div>
+          {/* Hover background with transition */}
+          <div
+            className={`absolute inset-0 transition-all duration-300 ease-in-out opacity-0 
+            group-hover:opacity-100 
+            ${darkMode ? "bg-green-900/20" : "bg-green-50/70"}
+            ${location.pathname === "/profile" ? "opacity-100" : ""}`}
+          />
+          {/* Hover border with transition */}
+          <div
+            className={`absolute right-0 top-0 bottom-0 w-1 transition-all duration-300 ease-in-out 
+            transform scale-y-0 group-hover:scale-y-100 bg-green-500/50
+            ${
+              location.pathname === "/profile" ? "scale-y-100 bg-green-500" : ""
+            }`}
+          />
         </Link>
       </div>
     </div>
@@ -157,34 +218,84 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
           <Link
             key={item.path}
             to={item.path}
-            className={`flex flex-col items-center justify-center flex-1 h-full ${
+            className={`flex flex-col items-center justify-center flex-1 h-full relative group
+            transition-all duration-300 ease-in-out
+            ${
               location.pathname === item.path
                 ? darkMode
-                  ? "text-green-400 bg-green-900/30 border-t-2 border-green-500"
-                  : "text-green-700 bg-green-50 border-t-2 border-green-500"
+                  ? "text-green-400"
+                  : "text-green-700"
                 : darkMode
-                ? "text-gray-400"
-                : "text-gray-600"
+                ? "text-gray-400 hover:text-green-400"
+                : "text-gray-600 hover:text-green-700"
             }`}
           >
-            {item.icon}
-            <span className="text-xs mt-1">{item.name}</span>
+            {/* Background and border transitions */}
+            <div
+              className={`absolute inset-0 transition-all duration-300 ease-in-out opacity-0 
+              group-hover:opacity-100 
+              ${darkMode ? "bg-green-900/20" : "bg-green-50/70"}
+              ${location.pathname === item.path ? "opacity-100" : ""}`}
+            />
+            <div
+              className={`absolute top-0 left-0 right-0 h-0.5 transition-all duration-300 ease-in-out 
+              transform scale-x-0 group-hover:scale-x-100 bg-green-500/50
+              ${
+                location.pathname === item.path
+                  ? "scale-x-100 bg-green-500"
+                  : ""
+              }`}
+            />
+
+            {/* Updated Content Structure */}
+            <div className="relative z-10 flex flex-col items-center w-full px-2">
+              <div className="flex items-center justify-center w-full">
+                {item.icon}
+              </div>
+              <span className="text-xs mt-1 text-center w-full">
+                {item.name}
+              </span>
+            </div>
           </Link>
         ))}
+
+        {/* Profile Link */}
         <Link
           to="/profile"
-          className={`flex flex-col items-center justify-center flex-1 h-full ${
+          className={`flex flex-col items-center justify-center flex-1 h-full relative group
+          transition-all duration-300 ease-in-out
+          ${
             location.pathname === "/profile"
               ? darkMode
-                ? "text-green-400 bg-green-900/30 border-t-2 border-green-500"
-                : "text-green-700 bg-green-50 border-t-2 border-green-500"
+                ? "text-green-400"
+                : "text-green-700"
               : darkMode
-              ? "text-gray-400"
-              : "text-gray-600"
+              ? "text-gray-400 hover:text-green-400"
+              : "text-gray-600 hover:text-green-700"
           }`}
         >
-          <HiOutlineUser className="w-5 h-5" />
-          <span className="text-xs mt-1">Profile</span>
+          {/* Background and border transitions */}
+          <div
+            className={`absolute inset-0 transition-all duration-300 ease-in-out opacity-0 
+            group-hover:opacity-100 
+            ${darkMode ? "bg-green-900/20" : "bg-green-50/70"}
+            ${location.pathname === "/profile" ? "opacity-100" : ""}`}
+          />
+          <div
+            className={`absolute top-0 left-0 right-0 h-0.5 transition-all duration-300 ease-in-out 
+            transform scale-x-0 group-hover:scale-x-100 bg-green-500/50
+            ${
+              location.pathname === "/profile" ? "scale-x-100 bg-green-500" : ""
+            }`}
+          />
+
+          {/* Updated Content Structure */}
+          <div className="relative z-10 flex flex-col items-center w-full px-2">
+            <div className="flex items-center justify-center w-full">
+              <HiOutlineUser className="w-5 h-5" />
+            </div>
+            <span className="text-xs mt-1 text-center w-full">Profile</span>
+          </div>
         </Link>
       </div>
     </div>
