@@ -6,7 +6,7 @@ import store from "./app/store";
 import SideBar from "./components/layout/Sidebar/SideBar";
 import TopBar from "./components/layout/TopBar/TopBar";
 import PageTransition from "./components/layout/PageTransition";
-
+import RoadMap from "./pages/RoadMap/RoadMap";
 // Add global style to remove scrollbar
 const globalStyle = `
   * {
@@ -95,6 +95,14 @@ const AnimatedRoutes = () => {
           element={
             <PageTransition>
               <SendEmail />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/roadmap"
+          element={
+            <PageTransition>
+              <RoadMap />
             </PageTransition>
           }
         />

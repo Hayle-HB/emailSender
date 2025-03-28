@@ -39,14 +39,35 @@ const SendEmail = () => {
 
   const handleCSVUpload = (event) => {
     const file = event.target.files[0];
-    if (file) {
-      // Handle CSV upload
+    // Only set recipients if valid emails were found in the CSV
+    if (file && event.target.emails && event.target.emails.length > 0) {
+      const newRecipients = event.target.emails.map((email) => ({ email }));
+      setRecipients(newRecipients);
+    } else {
+      // Clear recipients if the file was invalid or had no emails
+      setRecipients([]);
     }
   };
 
   const handleManualAdd = (email) => {
     if (email && /\S+@\S+\.\S+/.test(email)) {
       setRecipients([...recipients, { email }]);
+      return true;
+    }
+    return false;
+  };
+
+  const handleMultipleEmails = (emailsArray) => {
+    const validEmails = emailsArray
+      .filter((email) => email && /\S+@\S+\.\S+/.test(email))
+      .filter(
+        (email) =>
+          !recipients.some((r) => r.email.toLowerCase() === email.toLowerCase())
+      );
+
+    if (validEmails.length > 0) {
+      const newRecipients = validEmails.map((email) => ({ email }));
+      setRecipients((prevRecipients) => [...prevRecipients, ...newRecipients]);
       return true;
     }
     return false;
@@ -86,23 +107,31 @@ const SendEmail = () => {
 
   return (
     <div
-      className={`min-h-screen ${darkMode ? "bg-[#0F172A]" : "bg-[#FAFAFA]"}`}
+      className={`min-h-screen w-full ${
+        darkMode ? "bg-[#0F172A]" : "bg-[#FAFAFA]"
+      }`}
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <StepIndicator
-          currentStep={step}
-          totalSteps={3}
-          onBack={handleBack}
-          darkMode={darkMode}
-        />
+      <div className="w-full max-w-[calc(100vw-2rem)] sm:max-w-6xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
+        {/* Step Indicator */}
+        <div className="mb-6 sm:mb-8">
+          <StepIndicator
+            currentStep={step}
+            totalSteps={3}
+            onBack={handleBack}
+            darkMode={darkMode}
+          />
+        </div>
 
+        {/* Title */}
         <h1
-          className={`text-3xl font-bold text-center mb-8 ${
-            darkMode ? "text-gray-100" : "text-gray-900"
-          }`}
+          className={`text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8 
+            ${darkMode ? "text-gray-100" : "text-gray-900"}
+            transition-colors duration-200`}
         >
           Send Emails to Your Recipients
         </h1>
+
+        {/* Main Content Area */}
         <AnimatePresence mode="wait">
           {step === 1 && (
             <motion.div
@@ -111,14 +140,19 @@ const SendEmail = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
+              className="w-full"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <div
+                className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 
+                max-w-[calc(100vw-2rem)] sm:max-w-4xl mx-auto"
+              >
                 {options.map((option, index) => (
                   <motion.div
                     key={option.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.2 }}
+                    className="w-full"
                   >
                     <OptionCard
                       option={option}
@@ -139,12 +173,13 @@ const SendEmail = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="max-w-4xl mx-auto"
+              className="w-full max-w-[calc(100vw-2rem)] sm:max-w-4xl mx-auto"
             >
               {selectedOption === "manual" ? (
                 <ManualEntryForm
                   recipients={recipients}
                   onAdd={handleManualAdd}
+                  onAddMultiple={handleMultipleEmails}
                   onRemove={removeRecipient}
                   darkMode={darkMode}
                 />
@@ -161,12 +196,14 @@ const SendEmail = () => {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="mt-6 text-center"
+                  className="mt-4 sm:mt-6 text-center"
                 >
                   <button
                     onClick={handleNext}
-                    className="bg-indigo-500 text-white px-6 py-2 rounded-lg
-                      hover:bg-indigo-600 transition-colors"
+                    className="w-full sm:w-auto bg-indigo-500 text-white px-6 py-2.5 rounded-xl
+                      hover:bg-indigo-600 transition-all duration-200
+                      focus:ring-4 focus:ring-indigo-500/20 outline-none
+                      text-sm sm:text-base font-medium"
                   >
                     Next Step
                   </button>
@@ -182,7 +219,7 @@ const SendEmail = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="max-w-4xl mx-auto"
+              className="w-full max-w-[calc(100vw-2rem)] sm:max-w-4xl mx-auto"
             >
               <EmailComposer
                 content={emailContent}

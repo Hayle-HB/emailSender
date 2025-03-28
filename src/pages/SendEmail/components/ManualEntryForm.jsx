@@ -77,11 +77,10 @@ const ManualEntryForm = ({ recipients, onAdd, onRemove, darkMode, onNext }) => {
       return;
     }
 
-    if (onAdd(email)) {
-      setEmail("");
-      setError("");
-      setShowError(false);
-    }
+    onAdd(email);
+    setEmail("");
+    setError("");
+    setShowError(false);
   };
 
   const handleSubmit = (e) => {
@@ -89,16 +88,26 @@ const ManualEntryForm = ({ recipients, onAdd, onRemove, darkMode, onNext }) => {
     handleEmailSubmit();
   };
 
-  const handlePaste = async (e) => {
+  const handlePaste = (e) => {
     e.preventDefault();
     const paste = e.clipboardData.getData("text");
-    const emails = paste.match(/[\w.-]+@[\w.-]+\.\w+/g);
-    if (emails) {
-      const uniqueEmails = emails.filter(
-        (email) =>
+
+    // Split pasted text by spaces and filter out empty strings
+    const emailsArray = paste.split(/\s+/).filter((email) => email.trim());
+
+    if (emailsArray.length > 0) {
+      // Process each email
+      emailsArray.forEach((email) => {
+        if (
+          validateEmail(email) &&
           !recipients.some((r) => r.email.toLowerCase() === email.toLowerCase())
-      );
-      uniqueEmails.forEach((email) => onAdd(email));
+        ) {
+          onAdd(email);
+        }
+      });
+
+      // Clear input after processing
+      setEmail("");
     }
   };
 
@@ -199,36 +208,49 @@ const ManualEntryForm = ({ recipients, onAdd, onRemove, darkMode, onNext }) => {
                     )}
                   </AnimatePresence>
 
-                  {/* Helper Text - Add after the error message AnimatePresence */}
+                  {/* Helper Text - Responsive version */}
                   <div
                     className={`mt-6 space-y-2 ${
                       darkMode ? "text-gray-400" : "text-gray-600"
                     }`}
                   >
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="flex items-center gap-1.5">
-                        <kbd
-                          className={`px-2 py-1 text-xs rounded-md
-                        ${
-                          darkMode
-                            ? "bg-gray-800 text-gray-300 border border-gray-700"
-                            : "bg-gray-100 text-gray-700 border border-gray-200"
-                        }`}
-                        >
-                          Enter
-                        </kbd>
-                        <span>or click</span>
-                        <HiPaperAirplane className="w-4 h-4 transform rotate-90" />
-                      </span>
-                      <span>to add email</span>
+                    {/* Mobile version */}
+                    <div className="sm:hidden text-xs space-y-1.5 font-medium">
+                      <div className="flex items-center gap-1.5">
+                        <HiPaperAirplane className="w-3.5 h-3.5 transform rotate-90" />
+                        <span>Add email</span>
+                      </div>
+                      <p>• Backspace to remove</p>
+                      <p>• Paste multiple emails</p>
                     </div>
-                    <div className="text-xs space-y-1 font-medium">
-                      <p>
-                        • Press Backspace to remove the last email when input is
-                        empty
-                      </p>
-                      <p>• Paste multiple emails at once</p>
-                      <p>• Duplicate emails will be automatically filtered</p>
+
+                    {/* Desktop version */}
+                    <div className="hidden sm:block">
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="flex items-center gap-1.5">
+                          <kbd
+                            className={`px-2 py-1 text-xs rounded-md
+                            ${
+                              darkMode
+                                ? "bg-gray-800 text-gray-300 border border-gray-700"
+                                : "bg-gray-100 text-gray-700 border border-gray-200"
+                            }`}
+                          >
+                            Enter
+                          </kbd>
+                          <span>or click</span>
+                          <HiPaperAirplane className="w-4 h-4 transform rotate-90" />
+                        </span>
+                        <span>to add email</span>
+                      </div>
+                      <div className="text-xs space-y-1 font-medium mt-2">
+                        <p>
+                          • Press Backspace to remove the last email when input
+                          is empty
+                        </p>
+                        <p>• Paste multiple emails at once</p>
+                        <p>• Duplicate emails will be automatically filtered</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -323,36 +345,51 @@ const ManualEntryForm = ({ recipients, onAdd, onRemove, darkMode, onNext }) => {
                       )}
                     </AnimatePresence>
 
-                    {/* Helper Text - Add after the error message AnimatePresence */}
+                    {/* Helper Text - Responsive version */}
                     <div
                       className={`mt-6 space-y-2 ${
                         darkMode ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
-                      <div className="flex items-center gap-2 text-sm">
-                        <span className="flex items-center gap-1.5">
-                          <kbd
-                            className={`px-2 py-1 text-xs rounded-md
-                          ${
-                            darkMode
-                              ? "bg-gray-800 text-gray-300 border border-gray-700"
-                              : "bg-gray-100 text-gray-700 border border-gray-200"
-                          }`}
-                          >
-                            Enter
-                          </kbd>
-                          <span>or click</span>
-                          <HiPaperAirplane className="w-4 h-4 transform rotate-90" />
-                        </span>
-                        <span>to add email</span>
+                      {/* Mobile version */}
+                      <div className="sm:hidden text-xs space-y-1.5 font-medium">
+                        <div className="flex items-center gap-1.5">
+                          <HiPaperAirplane className="w-3.5 h-3.5 transform rotate-90" />
+                          <span>Add email</span>
+                        </div>
+                        <p>• Backspace to remove</p>
+                        <p>• Paste multiple emails</p>
                       </div>
-                      <div className="text-xs space-y-1 font-medium">
-                        <p>
-                          • Press Backspace to remove the last email when input
-                          is empty
-                        </p>
-                        <p>• Paste multiple emails at once</p>
-                        <p>• Duplicate emails will be automatically filtered</p>
+
+                      {/* Desktop version */}
+                      <div className="hidden sm:block">
+                        <div className="flex items-center gap-2 text-sm">
+                          <span className="flex items-center gap-1.5">
+                            <kbd
+                              className={`px-2 py-1 text-xs rounded-md
+                              ${
+                                darkMode
+                                  ? "bg-gray-800 text-gray-300 border border-gray-700"
+                                  : "bg-gray-100 text-gray-700 border border-gray-200"
+                              }`}
+                            >
+                              Enter
+                            </kbd>
+                            <span>or click</span>
+                            <HiPaperAirplane className="w-4 h-4 transform rotate-90" />
+                          </span>
+                          <span>to add email</span>
+                        </div>
+                        <div className="text-xs space-y-1 font-medium mt-2">
+                          <p>
+                            • Press Backspace to remove the last email when
+                            input is empty
+                          </p>
+                          <p>• Paste multiple emails at once</p>
+                          <p>
+                            • Duplicate emails will be automatically filtered
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>

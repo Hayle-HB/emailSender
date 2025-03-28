@@ -1,141 +1,116 @@
 import React from "react";
-import { motion } from "framer-motion";
-import {
-  HiOutlineMail,
-  HiOutlineUserGroup,
-  HiLightningBolt,
-  HiArrowRight,
-} from "react-icons/hi";
 import { useSelector } from "react-redux";
+import { HiMail, HiUpload, HiTemplate, HiChartBar } from "react-icons/hi";
+import { motion } from "framer-motion";
 
 const Home = () => {
   const darkMode = useSelector((state) => state.theme.darkMode);
 
   const features = [
     {
-      icon: <HiOutlineMail className="w-7 h-7" />,
-      title: "Smart Email Campaigns",
+      icon: HiMail,
+      title: "Bulk Email Sending",
       description:
-        "Design beautiful email campaigns that engage your audience with our intuitive drag-and-drop builder.",
+        "Send personalized emails to multiple recipients efficiently",
     },
     {
-      icon: <HiOutlineUserGroup className="w-7 h-7" />,
-      title: "Audience Insights",
-      description:
-        "Understand your audience better with advanced analytics and segmentation tools.",
+      icon: HiUpload,
+      title: "CSV Upload",
+      description: "Import recipient lists directly from CSV files",
     },
     {
-      icon: <HiLightningBolt className="w-7 h-7" />,
-      title: "Real-time Analytics",
-      description:
-        "Monitor campaign performance in real-time with comprehensive analytics and reporting.",
+      icon: HiTemplate,
+      title: "Email Templates",
+      description: "Create and save reusable email templates",
+    },
+    {
+      icon: HiChartBar,
+      title: "Analytics",
+      description: "Track email performance and engagement metrics",
     },
   ];
 
   return (
     <div
-      className={`min-h-screen ${darkMode ? "bg-[#0F172A]" : "bg-[#FAFAFA]"}`}
+      className={`min-h-[calc(100vh-4rem)] ${
+        darkMode ? "bg-[#0F172A]" : "bg-[#FAFAFA]"
+      }`}
     >
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 z-0">
-          <div
-            className={`absolute inset-0 opacity-30 
-            ${
-              darkMode
-                ? "bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10"
-                : "bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100"
-            }`}
-          />
-        </div>
-
-        <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32">
-          <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center"
-            >
+      <div className="min-h-full w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        <div
+          className="min-h-full w-full flex flex-col justify-center gap-6 sm:gap-8 md:gap-12 
+          py-6 sm:py-8 md:py-12 mt-16 md:mt-0"
+        >
+          {/* Hero Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center space-y-4 sm:space-y-6"
+          >
+            <div className="relative px-2 sm:px-0">
               <h1
-                className={`text-5xl sm:text-6xl lg:text-7xl font-bold mb-8 leading-tight
+                className={`text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold
+                tracking-tight leading-tight sm:leading-tight md:leading-tight
                 ${darkMode ? "text-white" : "text-gray-900"}`}
               >
-                Elevate Your{" "}
-                <span className="text-indigo-500">Email Marketing</span>
+                <span className="inline-block mb-1 sm:mb-0">
+                  Send Emails at
+                </span>
+                <span className="relative inline-block px-2 mx-1 sm:mx-2">
+                  <span className="relative z-10">Scale</span>
+                  <div className="absolute inset-0 transform -rotate-2 bg-indigo-500/10 rounded-lg" />
+                </span>
+                <span className="inline-block">with</span>
+                <br className="hidden sm:block" />
+                <span className="text-blue-500 inline-block mt-1 sm:mt-2">
+                  Confidence
+                </span>
               </h1>
-              <p
-                className={`text-xl sm:text-2xl max-w-3xl mx-auto mb-10 leading-relaxed
-                ${darkMode ? "text-gray-300" : "text-gray-600"}`}
-              >
-                Transform your email campaigns with powerful automation, deep
-                insights, and beautiful templates that convert.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="group flex items-center gap-2 px-8 py-4 rounded-full
-                    bg-indigo-500 hover:bg-indigo-600 text-white font-semibold
-                    shadow-lg shadow-indigo-500/25 transition-all duration-200"
-                >
-                  Get Started Free
-                  <HiArrowRight className="group-hover:translate-x-1 transition-transform" />
-                </motion.button>
-                <button
-                  className={`px-8 py-4 rounded-full font-semibold
-                  ${
-                    darkMode
-                      ? "bg-gray-800 text-gray-200 hover:bg-gray-700"
-                      : "bg-white text-gray-700 hover:bg-gray-50"
-                  } 
-                  shadow-lg transition-all duration-200`}
-                >
-                  Watch Demo
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+            </div>
+            <p
+              className={`text-sm xs:text-base sm:text-lg md:text-xl 
+              max-w-[280px] xs:max-w-xs sm:max-w-lg md:max-w-2xl mx-auto font-medium
+              px-3 xs:px-4 sm:px-6 md:px-0
+              ${darkMode ? "text-gray-300" : "text-gray-600"}`}
+            >
+              Powerful email management platform designed for businesses that
+              want to reach their audience effectively
+            </p>
+          </motion.div>
 
-      {/* Features Section */}
-      <section
-        className={`px-4 sm:px-6 lg:px-8 py-20 
-        ${darkMode ? "bg-[#1E293B]" : "bg-white"}`}
-      >
-        <div className="max-w-6xl mx-auto">
+          {/* Features Grid */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            transition={{ delay: 0.2 }}
+            className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 
+              gap-3 sm:gap-4 md:gap-6 
+              px-3 sm:px-4 md:px-0"
           >
             {features.map((feature, index) => (
               <motion.div
                 key={feature.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className={`p-8 rounded-2xl transition-transform hover:scale-105
-                  ${
-                    darkMode
-                      ? "bg-[#0F172A] hover:bg-[#1E293B]"
-                      : "bg-gray-50 hover:bg-gray-100"
-                  }`}
+                transition={{ delay: 0.2 + index * 0.1 }}
+                className={`p-3 xs:p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl ${
+                  darkMode
+                    ? "bg-gray-800/50 hover:bg-gray-800/70"
+                    : "bg-white hover:bg-gray-50"
+                } transition-all duration-200 shadow-lg hover:shadow-xl`}
               >
-                <div className="inline-block p-3 rounded-xl bg-indigo-500/10 mb-6">
-                  <div className="text-indigo-500">{feature.icon}</div>
-                </div>
+                <feature.icon
+                  className="w-6 h-6 xs:w-8 xs:h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 
+                  text-indigo-500 mb-2 xs:mb-3 sm:mb-4"
+                />
                 <h3
-                  className={`text-2xl font-bold mb-4
-                  ${darkMode ? "text-white" : "text-gray-900"}`}
+                  className={`text-sm xs:text-base sm:text-lg font-semibold mb-1 sm:mb-2
+                  ${darkMode ? "text-gray-100" : "text-gray-900"}`}
                 >
                   {feature.title}
                 </h3>
                 <p
-                  className={`text-lg leading-relaxed
+                  className={`text-xs sm:text-sm
                   ${darkMode ? "text-gray-400" : "text-gray-600"}`}
                 >
                   {feature.description}
@@ -143,59 +118,40 @@ const Home = () => {
               </motion.div>
             ))}
           </motion.div>
-        </div>
-      </section>
 
-      {/* Stats Section */}
-      <section
-        className={`px-4 sm:px-6 lg:px-8 py-20
-        ${darkMode ? "bg-[#0F172A]" : "bg-[#FAFAFA]"}`}
-      >
-        <div className="max-w-6xl mx-auto">
+          {/* Stats Section */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-12 text-center"
+            transition={{ delay: 0.4 }}
+            className="flex flex-wrap justify-center 
+              gap-3 xs:gap-4 sm:gap-6 md:gap-8 lg:gap-12 
+              px-2 pb-4 sm:pb-6"
           >
             {[
-              {
-                label: "Active Users",
-                value: "50,000+",
-                plus: "↑ 27% this month",
-              },
-              {
-                label: "Emails Delivered",
-                value: "10M+",
-                plus: "99.9% success rate",
-              },
-              {
-                label: "Customer Satisfaction",
-                value: "4.9/5",
-                plus: "Based on 3K+ reviews",
-              },
-            ].map((stat) => (
-              <div key={stat.label} className="space-y-3">
+              { value: "10K+", label: "Emails Sent" },
+              { value: "1K+", label: "Active Users" },
+              { value: "99%", label: "Delivery Rate" },
+              { value: "24/7", label: "Support" },
+            ].map((stat, index) => (
+              <div key={stat.label} className="text-center">
                 <p
-                  className={`text-4xl font-bold
-                  ${darkMode ? "text-white" : "text-gray-900"}`}
+                  className={`text-xl xs:text-2xl sm:text-3xl font-bold mb-0.5 sm:mb-1
+                  ${darkMode ? "text-indigo-400" : "text-indigo-600"}`}
                 >
                   {stat.value}
                 </p>
                 <p
-                  className={`text-lg font-medium
+                  className={`text-xs sm:text-sm
                   ${darkMode ? "text-gray-400" : "text-gray-600"}`}
                 >
                   {stat.label}
-                </p>
-                <p className="text-sm text-indigo-500 font-medium">
-                  {stat.plus}
                 </p>
               </div>
             ))}
           </motion.div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import {
   HiOutlineUser,
   HiMenuAlt2,
   HiOutlineHome,
+  HiOutlineMap,
 } from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
 import { toggleTheme } from "../../../feature/theme/theme";
@@ -31,6 +32,11 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
       name: "Subscribers",
       icon: <HiOutlineUserGroup className="w-5 h-5" />,
     },
+    {
+      path: "/roadmap",
+      name: "Roadmap",
+      icon: <HiOutlineMap className="w-5 h-5" />,
+    },
   ];
 
   // First, add this new component at the top level of your SideBar component:
@@ -45,6 +51,8 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
           ? "translate-y-14"
           : pathname === "/subscribers"
           ? "translate-y-28"
+          : pathname === "/roadmap"
+          ? "translate-y-42"
           : pathname === "/profile"
           ? "translate-y-[calc(100vh-6rem)]"
           : ""
