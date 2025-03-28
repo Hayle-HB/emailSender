@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { useSelector } from "react-redux";
 import {
@@ -10,6 +10,7 @@ import {
   HiShieldCheck,
   HiCube,
   HiTerminal,
+  HiChevronRight,
 } from "react-icons/hi";
 
 const RoadMap = () => {
@@ -140,200 +141,122 @@ const RoadMap = () => {
     },
   ];
 
-  // Update stations with proper x,y coordinates
+  // Keep your existing stations data but update the layout
   const updatedStations = stations.map((station, index) => ({
     ...station,
-    x: 200 + (index % 2) * 200, // Alternating between 200 and 400 on x-axis
-    y: 100 + index * 150, // Each station 150px apart vertically
+    x: 100 + (index % 3) * 400, // Three columns: 100, 500, 900
+    y: 100 + Math.floor(index / 3) * 200, // More compact vertical spacing
   }));
-
-  // Generate SVG path based on stations
-  const generatePath = () => {
-    return updatedStations.reduce((path, station, index) => {
-      if (index === 0) return `M${station.x},${station.y}`;
-      return `${path} L${station.x},${station.y}`;
-    }, "");
-  };
-
-  const pathDefinition = generatePath();
-  const viewBoxHeight = Math.max(...updatedStations.map((s) => s.y)) + 200; // Add padding
 
   return (
     <div className={`min-h-screen ${darkMode ? "bg-gray-900" : "bg-gray-50"}`}>
-      <div className="fixed inset-0 overflow-hidden">
-        <svg
-          className="w-full h-full"
-          viewBox={`0 0 800 ${viewBoxHeight}`}
-          preserveAspectRatio="xMidYMin slice"
+      {/* Header */}
+      <div
+        className={`sticky top-0 z-20 backdrop-blur-sm bg-opacity-90 
+          ${darkMode ? "bg-gray-900/80" : "bg-gray-50/80"} py-6`}
+      >
+        <h1
+          className={`text-center text-3xl font-bold 
+          ${darkMode ? "text-white" : "text-gray-900"}`}
         >
-          {/* Background Line */}
-          <path
-            d={pathDefinition}
-            fill="none"
-            stroke={darkMode ? "#374151" : "#E5E7EB"}
-            strokeWidth="8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="transition-colors duration-300"
-          />
+          Node.js Learning Journey
+        </h1>
+      </div>
 
-          {/* Progress Line */}
-          <motion.path
-            d={pathDefinition}
-            fill="none"
-            stroke="url(#progressGradient)"
-            strokeWidth="8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{
-              pathLength: progressIndicator,
-            }}
-          />
-
-          <defs>
-            <linearGradient
-              id="progressGradient"
-              x1="0%"
-              y1="0%"
-              x2="0%"
-              y2="100%"
-            >
-              <stop offset="0%" stopColor="#3B82F6" />
-              <stop offset="50%" stopColor="#8B5CF6" />
-              <stop offset="100%" stopColor="#EC4899" />
-            </linearGradient>
-          </defs>
-
-          {/* Stations */}
+      {/* Main Content */}
+      <div className="max-w-[1400px] mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {updatedStations.map((station, index) => (
-            <g key={station.id}>
-              {/* Connection Line to Next Station */}
-              {index < updatedStations.length - 1 && (
-                <path
-                  d={`M${station.x},${station.y} L${
-                    updatedStations[index + 1].x
-                  },${updatedStations[index + 1].y}`}
-                  stroke={darkMode ? "#374151" : "#E5E7EB"}
-                  strokeWidth="2"
-                  strokeDasharray="4 4"
-                  className="transition-colors duration-300"
+            <motion.div
+              key={station.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              className={`relative ${
+                darkMode ? "bg-gray-800" : "bg-white"
+              } rounded-lg shadow-lg p-6`}
+            >
+              {/* Connection Line */}
+              {index !== updatedStations.length - 1 && (
+                <div
+                  className={`absolute -right-6 top-1/2 w-12 h-[2px] 
+                    bg-gradient-to-r from-current to-transparent 
+                    ${darkMode ? "text-gray-700" : "text-gray-300"}
+                    ${(index + 1) % 3 === 0 ? "hidden" : "block lg:block"}`}
                 />
               )}
 
-              {/* Station Circle */}
-              <motion.circle
-                cx={station.x}
-                cy={station.y}
-                r="20"
-                fill={darkMode ? "#1F2937" : "white"}
-                stroke={station.color}
-                strokeWidth="4"
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+              {/* Progress Indicator */}
+              <motion.div
+                className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-green-500 to-blue-500 rounded-l-lg"
+                style={{
+                  scaleY: progressIndicator,
+                  originY: 0,
+                }}
               />
 
-              {/* Station Icon */}
-              <foreignObject
-                x={station.x - 12}
-                y={station.y - 12}
-                width="24"
-                height="24"
-                className="text-center"
-              >
-                <div className="flex items-center justify-center h-full">
-                  {React.cloneElement(station.icon, {
-                    className: `w-5 h-5`,
-                    style: { color: station.color },
-                  })}
-                </div>
-              </foreignObject>
-
-              {/* Station Label */}
-              <text
-                x={station.x + (index % 2 ? -30 : 30)}
-                y={station.y}
-                fill={darkMode ? "#D1D5DB" : "#374151"}
-                className="text-sm font-medium"
-                textAnchor={index % 2 ? "end" : "start"}
-                dominantBaseline="middle"
-              >
-                {station.name}
-              </text>
-            </g>
-          ))}
-        </svg>
-      </div>
-
-      {/* Scrollable Content */}
-      <div className="relative z-10 pt-20">
-        {updatedStations.map((station, index) => (
-          <motion.div
-            key={station.id}
-            initial={{ opacity: 0, x: index % 2 ? 50 : -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className={`sticky top-24 mx-auto max-w-md p-6 rounded-xl shadow-xl mb-48
-              ${darkMode ? "bg-gray-800/90" : "bg-white/90"}
-              backdrop-blur-sm border-l-4`}
-            style={{ borderColor: station.color }}
-          >
-            <div className="flex items-center gap-4 mb-4">
-              <div
-                className={`p-3 rounded-lg bg-opacity-20`}
-                style={{ backgroundColor: station.color }}
-              >
-                {station.icon}
-              </div>
-              <div>
-                <h3
-                  className={`text-xl font-bold ${
-                    darkMode ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  {station.name}
-                </h3>
-                <p
-                  className={`text-sm ${
-                    darkMode ? "text-gray-400" : "text-gray-500"
-                  }`}
-                >
-                  Level {station.id} of {updatedStations.length}
-                </p>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              {station.skills.map((skill) => (
+              {/* Content */}
+              <div className="flex items-start gap-4">
                 <div
-                  key={skill}
-                  className={`p-2 rounded-lg text-sm
-                    ${darkMode ? "bg-gray-700/50" : "bg-gray-100"}
-                    ${darkMode ? "text-gray-300" : "text-gray-700"}`}
+                  className="p-3 rounded-lg bg-opacity-10"
+                  style={{ backgroundColor: station.color }}
                 >
-                  {skill}
+                  {station.icon}
                 </div>
-              ))}
-            </div>
-          </motion.div>
-        ))}
+                <div className="flex-1">
+                  <h3
+                    className={`text-lg font-semibold mb-1
+                    ${darkMode ? "text-white" : "text-gray-900"}`}
+                  >
+                    {station.name}
+                  </h3>
+                  <div className="grid grid-cols-2 gap-2 mt-3">
+                    {station.skills.map((skill) => (
+                      <div
+                        key={skill}
+                        className={`flex items-center gap-1 text-sm px-2 py-1 rounded
+                          ${
+                            darkMode
+                              ? "bg-gray-700/50 text-gray-300"
+                              : "bg-gray-100 text-gray-700"
+                          }`}
+                      >
+                        <HiChevronRight className="flex-shrink-0" />
+                        <span className="truncate">{skill}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Step Indicator */}
+              <div
+                className={`absolute -top-3 right-4 px-3 py-1 rounded-full text-xs font-medium
+                  ${
+                    darkMode
+                      ? "bg-gray-700 text-gray-300"
+                      : "bg-gray-200 text-gray-700"
+                  }`}
+              >
+                Step {station.id}/{updatedStations.length}
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
-      {/* Progress Indicator */}
-      <motion.div
-        className={`fixed bottom-8 left-1/2 transform -translate-x-1/2 
-          px-6 py-3 rounded-full shadow-lg z-50
-          ${darkMode ? "bg-gray-800" : "bg-white"}`}
-        initial={{ y: 100 }}
-        animate={{ y: 0 }}
-      >
-        <motion.div className="h-1 w-32 bg-gray-200 rounded-full overflow-hidden">
+      {/* Progress Bar */}
+      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+        <motion.div
+          className={`h-1 w-40 rounded-full overflow-hidden
+            ${darkMode ? "bg-gray-700" : "bg-gray-200"}`}
+        >
           <motion.div
-            className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
+            className="h-full bg-gradient-to-r from-green-500 to-blue-500"
             style={{ scaleX: progressIndicator }}
           />
         </motion.div>
-      </motion.div>
+      </div>
     </div>
   );
 };
