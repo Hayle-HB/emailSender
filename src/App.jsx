@@ -7,6 +7,17 @@ import SideBar from "./components/layout/Sidebar/SideBar";
 import TopBar from "./components/layout/TopBar/TopBar";
 import PageTransition from "./components/layout/PageTransition";
 
+// Add global style to remove scrollbar
+const globalStyle = `
+  * {
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+  }
+  *::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+`;
+
 // // Import your page components
 // const Home = () => {
 //   return (
@@ -142,6 +153,7 @@ const AppContent = () => {
 const App = () => {
   return (
     <Provider store={store}>
+      <style>{globalStyle}</style>
       <BrowserRouter>
         <AppContent />
       </BrowserRouter>

@@ -133,14 +133,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
                 {item.name}
               </span>
             </div>
-            {/* Hover background with transition */}
-            <div
-              className={`absolute inset-0 transition-all duration-300 ease-in-out opacity-0 
-              group-hover:opacity-100 
-              ${darkMode ? "bg-green-900/20" : "bg-green-50/70"}
-              ${location.pathname === item.path ? "opacity-100" : ""}`}
-            />
-            {/* Hover border with transition */}
+            {/* Remove the background hover effect and keep only the border */}
             <div
               className={`absolute right-0 top-0 bottom-0 w-1 transition-all duration-300 ease-in-out 
               transform scale-y-0 group-hover:scale-y-100 bg-green-500/50
@@ -186,14 +179,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
               Profile
             </span>
           </div>
-          {/* Hover background with transition */}
-          <div
-            className={`absolute inset-0 transition-all duration-300 ease-in-out opacity-0 
-            group-hover:opacity-100 
-            ${darkMode ? "bg-green-900/20" : "bg-green-50/70"}
-            ${location.pathname === "/profile" ? "opacity-100" : ""}`}
-          />
-          {/* Hover border with transition */}
+          {/* Remove the background hover effect and keep only the border */}
           <div
             className={`absolute right-0 top-0 bottom-0 w-1 transition-all duration-300 ease-in-out 
             transform scale-y-0 group-hover:scale-y-100 bg-green-500/50
@@ -230,13 +216,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
                 : "text-gray-600 hover:text-green-700"
             }`}
           >
-            {/* Background and border transitions */}
-            <div
-              className={`absolute inset-0 transition-all duration-300 ease-in-out opacity-0 
-              group-hover:opacity-100 
-              ${darkMode ? "bg-green-900/20" : "bg-green-50/70"}
-              ${location.pathname === item.path ? "opacity-100" : ""}`}
-            />
+            {/* Border indicator - now on the top */}
             <div
               className={`absolute top-0 left-0 right-0 h-0.5 transition-all duration-300 ease-in-out 
               transform scale-x-0 group-hover:scale-x-100 bg-green-500/50
@@ -247,8 +227,8 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
               }`}
             />
 
-            {/* Updated Content Structure */}
-            <div className="relative z-10 flex flex-col items-center w-full px-2">
+            {/* Content */}
+            <div className="relative z-10 flex flex-col items-center w-full">
               <div className="flex items-center justify-center w-full">
                 {item.icon}
               </div>
@@ -274,13 +254,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
               : "text-gray-600 hover:text-green-700"
           }`}
         >
-          {/* Background and border transitions */}
-          <div
-            className={`absolute inset-0 transition-all duration-300 ease-in-out opacity-0 
-            group-hover:opacity-100 
-            ${darkMode ? "bg-green-900/20" : "bg-green-50/70"}
-            ${location.pathname === "/profile" ? "opacity-100" : ""}`}
-          />
+          {/* Border indicator - now on the top */}
           <div
             className={`absolute top-0 left-0 right-0 h-0.5 transition-all duration-300 ease-in-out 
             transform scale-x-0 group-hover:scale-x-100 bg-green-500/50
@@ -289,8 +263,8 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
             }`}
           />
 
-          {/* Updated Content Structure */}
-          <div className="relative z-10 flex flex-col items-center w-full px-2">
+          {/* Content */}
+          <div className="relative z-10 flex flex-col items-center w-full">
             <div className="flex items-center justify-center w-full">
               <HiOutlineUser className="w-5 h-5" />
             </div>
